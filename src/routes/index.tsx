@@ -1,24 +1,276 @@
-import { createFileRoute } from "@tanstack/react-router";
-
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+import { createFileRoute, Link } from "@tanstack/react-router";
+import {
+  ArrowRight,
+  Award,
+  Dumbbell,
+  ClipboardList,
+  Users,
+  Heart,
+  ShieldCheck,
+  Sparkles,
+  Check,
+  Star,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { FinalCTA } from "@/components/fitzone/site";
+import { Programs } from "@/components/fitzone/programs";
+import { meta } from "@/lib/fitness-data";
+import hero from "@/assets/gym-hero.jpg";
+import strength from "@/assets/strength.jpg";
+import yoga from "@/assets/yoga.jpg";
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () =>
+    meta(
+      "Transform Your Body, Elevate Your Life",
+      "Find your strength at FitZone Fitness Club. Explore personal training, yoga, fitness programs, and a welcoming community.",
+    ),
+  component: Home,
 });
-
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+const features = [
+  {
+    icon: Award,
+    title: "Expert Personal Trainers",
+    text: "Real expertise. Genuine encouragement. Coaches who bring out your best.",
+  },
+  {
+    icon: Dumbbell,
+    title: "Modern Fitness Equipment",
+    text: "Thoughtfully equipped spaces that make every workout feel a little better.",
+  },
+  {
+    icon: ClipboardList,
+    title: "Personalized Workout Plans",
+    text: "Your starting point. Your pace. A plan that grows right alongside you.",
+  },
+  {
+    icon: Users,
+    title: "A Community That Cares",
+    text: "More than a gym. A welcoming space where you belong from day one.",
+  },
+];
+const plans = [
+  {
+    name: "Basic",
+    price: 29,
+    description: "A strong place to start.",
+    features: [
+      "Full gym floor access",
+      "Modern training equipment",
+      "Locker room access",
+      "Fitness orientation",
+    ],
+  },
+  {
+    name: "Standard",
+    price: 49,
+    description: "A little more, for your goals.",
+    features: [
+      "Everything in Basic",
+      "Unlimited group classes",
+      "Personalized workout plan",
+      "Monthly progress check-in",
+    ],
+  },
+  {
+    name: "Premium",
+    price: 79,
+    description: "Your potential, without limits.",
+    features: [
+      "Everything in Standard",
+      "4 personal training sessions",
+      "Nutrition guidance",
+      "Priority class reservations",
+    ],
+  },
+];
+export function Stars() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <span className="stars" aria-label="5 out of 5 stars">
+      {Array.from({ length: 5 }, (_, i) => (
+        <Star key={i} size={12} fill="currentColor" strokeWidth={1} />
+      ))}
+    </span>
+  );
+}
+function Home() {
+  return (
+    <main>
+      <section className="hero">
+        <img
+          className="hero-photo"
+          src={hero}
+          width={1920}
+          height={1024}
+          alt="Athlete training with dumbbells in the sunlit FitZone gym"
+          fetchPriority="high"
+        />
+        <div className="container-page hero-content fade-in">
+          <div className="hero-kicker">FITZONE FITNESS CLUB · STRONGER TOGETHER</div>
+          <h1>
+            Transform Your Body,
+            <br />
+            Elevate <span>Your Life.</span>
+          </h1>
+          <p className="hero-copy">
+            Your fitness journey starts here. Build strength, improve endurance, and become the best
+            version of yourself.
+          </p>
+          <div className="hero-actions">
+            <Button asChild>
+              <Link to="/contact" search={{ subject: "Membership enquiry" }}>
+                Join Our Gym <ArrowRight />
+              </Link>
+            </Button>
+            <Button asChild variant="hero">
+              <a href="#programs">
+                Explore Programs <ArrowRight />
+              </a>
+            </Button>
+          </div>
+          <div className="hero-trust">
+            <div className="avatar-stack">
+              <img src={strength} alt="" />
+              <img src={yoga} alt="" />
+              <img src={hero} alt="" />
+            </div>
+            <div>
+              <Stars />
+              <span>A little stronger. Every single day.</span>
+            </div>
+          </div>
+        </div>
+        <span className="hero-side-label">YOUR SPACE. YOUR PACE. YOUR FITZONE.</span>
+      </section>
+      <div className="benefit-strip">
+        <div className="container-page benefit-items">
+          {[
+            [ShieldCheck, "Certified Expert Trainers"],
+            [Dumbbell, "State-of-the-Art Equipment"],
+            [Heart, "All Fitness Levels Welcome"],
+            [Sparkles, "A Healthier, Happier You"],
+          ].map(([Icon, text]) => {
+            const ItemIcon = Icon as typeof ShieldCheck;
+            return (
+              <div className="benefit-item" key={String(text)}>
+                <ItemIcon strokeWidth={1.6} />
+                <span>{String(text)}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      <section className="section">
+        <div className="container-page">
+          <div className="section-heading center">
+            <p className="eyebrow">MORE THAN A GYM</p>
+            <h2>Built around you. Backed by us.</h2>
+            <p>The right support, the right space, and a community that lifts you higher.</p>
+          </div>
+          <div className="feature-grid">
+            {features.map(({ icon: Icon, title, text }) => (
+              <article className="feature-card" key={title}>
+                <div className="feature-icon">
+                  <Icon size={23} strokeWidth={1.5} />
+                </div>
+                <h3>{title}</h3>
+                <p>{text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+      <Programs />
+      <section className="section" id="membership">
+        <div className="container-page">
+          <div className="section-heading center">
+            <p className="eyebrow">INVEST IN YOURSELF</p>
+            <h2>Your goals. Your membership.</h2>
+            <p>Simple plans for every stage of your journey. Let’s find your fit.</p>
+          </div>
+          <div className="pricing-grid">
+            {plans.map((plan, index) => (
+              <article
+                className={`pricing-card ${index === 1 ? "recommended" : ""}`}
+                key={plan.name}
+              >
+                {index === 1 && <span className="plan-badge">Most Popular</span>}
+                <h3 className="text-lg">{plan.name}</h3>
+                <p className="text-xs text-muted-foreground mt-2">{plan.description}</p>
+                <div className="price">
+                  ${plan.price}
+                  <small> / month</small>
+                </div>
+                <ul className="plan-list">
+                  {plan.features.map((feature) => (
+                    <li key={feature}>
+                      <Check />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+                <Button asChild variant={index === 1 ? "default" : "outline"} className="w-full">
+                  <Link to="/contact" search={{ subject: `${plan.name} membership enquiry` }}>
+                    Choose Plan <ArrowRight />
+                  </Link>
+                </Button>
+              </article>
+            ))}
+          </div>
+          <p className="demo-note text-center">
+            Illustrative membership prices in USD. Enquire for confirmed pricing and availability.
+          </p>
+        </div>
+      </section>
+      <section className="section testimonial-section">
+        <div className="container-page">
+          <div className="section-heading center">
+            <p className="eyebrow">STRONGER, TOGETHER</p>
+            <h2>Real effort. Meaningful change.</h2>
+            <p>A little inspiration from the kind of journeys we’re here for.</p>
+          </div>
+          <div className="review-grid">
+            {[
+              {
+                name: "Sarah M.",
+                image: yoga,
+                role: "Finding her strength",
+                quote:
+                  "“For the first time, the gym feels like my space. The coaches meet you where you are, and every little win is celebrated.”",
+              },
+              {
+                name: "Daniel R.",
+                image: strength,
+                role: "Building better habits",
+                quote:
+                  "“It’s the people that make the difference. I look forward to showing up, and I’m stronger in ways I never expected.”",
+              },
+              {
+                name: "Emily K.",
+                image: hero,
+                role: "Making time for herself",
+                quote:
+                  "“From a first yoga class to a consistent routine, the support has made the journey feel achievable — and actually enjoyable.”",
+              },
+            ].map((review) => (
+              <article className="review-card" key={review.name}>
+                <Stars />
+                <blockquote>{review.quote}</blockquote>
+                <div className="review-person">
+                  <img src={review.image} loading="lazy" alt="Illustrative member portrait" />
+                  <div>
+                    <h4>{review.name}</h4>
+                    <p>{review.role}</p>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+          <p className="demo-note text-center">
+            Illustrative member stories, not verified customer testimonials.
+          </p>
+        </div>
+      </section>
+      <FinalCTA />
+    </main>
   );
 }
