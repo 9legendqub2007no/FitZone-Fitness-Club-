@@ -5,9 +5,8 @@ import { Button } from "@/components/ui/button";
 import { PageIntro } from "@/components/fitzone/site";
 import { meta } from "@/lib/fitness-data";
 export const Route = createFileRoute("/contact")({
-  validateSearch: (search: Record<string, unknown>): { subject?: string } => ({
-    subject: typeof search["subject"] === "string" ? search["subject"] : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): { subject?: string } =>
+    typeof search["subject"] === "string" ? { subject: search["subject"] } : {},
   head: () =>
     meta(
       "Let’s Talk Fitness",
