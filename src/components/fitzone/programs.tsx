@@ -1,7 +1,89 @@
-import { useState } from 'react';
-import { Link } from '@tanstack/react-router';
-import { ArrowRight, Clock, BarChart3 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { programs } from '@/lib/fitness-data';
-export function Programs(){ const [expanded,setExpanded]=useState(false);const [selected,setSelected]=useState<typeof programs[number]|null>(null);return <section className="section program-section" id="programs"><div className="container-page"><div className="section-heading row"><div><p className="eyebrow">MOVE YOUR WAY</p><h2>A program for every ambition.</h2><p>Find what moves you. We’ll take care of the rest.</p></div><Button variant="outline" onClick={()=>setExpanded(!expanded)}>{expanded?'Show featured programs':'Explore All Programs'} <ArrowRight/></Button></div><div className="program-grid">{programs.slice(0,expanded?5:3).map(program=><article className="program-card" key={program.name}><div className="overflow-hidden"><img className="program-image" src={program.image} alt={`${program.name} at FitZone`} loading="lazy" width={1024} height={1024}/></div><div className="program-info"><span className="eyebrow">{program.tag}</span><h3>{program.name}</h3><p>{program.description}</p><Button variant="link" className="p-0 h-auto text-xs" onClick={()=>setSelected(program)}>Learn More <ArrowRight/></Button></div></article>)}</div></div><Dialog open={selected!==null} onOpenChange={open=>{if(!open)setSelected(null);}}><DialogContent className="dialog-scroll">{selected&&<><img src={selected.image} alt={selected.name} className="w-full h-52 object-cover rounded-md"/><DialogTitle>{selected.name}</DialogTitle><DialogDescription>{selected.detail}</DialogDescription><div className="flex gap-5 text-xs text-muted-foreground"><span className="flex gap-2 items-center"><Clock size={14}/>45–60 minutes</span><span className="flex gap-2 items-center"><BarChart3 size={14}/>All levels welcome</span></div><Button asChild onClick={()=>setSelected(null)}><Link to="/contact" search={{subject:`${selected.name} enquiry`}}>Ask about this program <ArrowRight/></Link></Button></>}</DialogContent></Dialog></section>;}
+import { useState } from "react";
+import { Link } from "@tanstack/react-router";
+import { ArrowRight, Clock, BarChart3 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { programs } from "@/lib/fitness-data";
+export function Programs() {
+  const [expanded, setExpanded] = useState(false);
+  const [selected, setSelected] = useState<(typeof programs)[number] | null>(null);
+  return (
+    <section className="section program-section" id="programs">
+      <div className="container-page">
+        <div className="section-heading row">
+          <div>
+            <p className="eyebrow">MOVE YOUR WAY</p>
+            <h2>A program for every ambition.</h2>
+            <p>Find what moves you. We’ll take care of the rest.</p>
+          </div>
+          <Button variant="outline" onClick={() => setExpanded(!expanded)}>
+            {expanded ? "Show featured programs" : "Explore All Programs"} <ArrowRight />
+          </Button>
+        </div>
+        <div className="program-grid">
+          {programs.slice(0, expanded ? 5 : 3).map((program) => (
+            <article className="program-card" key={program.name}>
+              <div className="overflow-hidden">
+                <img
+                  className="program-image"
+                  src={program.image}
+                  alt={`${program.name} at FitZone`}
+                  loading="lazy"
+                  width={1024}
+                  height={1024}
+                />
+              </div>
+              <div className="program-info">
+                <span className="eyebrow">{program.tag}</span>
+                <h3>{program.name}</h3>
+                <p>{program.description}</p>
+                <Button
+                  variant="link"
+                  className="p-0 h-auto text-xs"
+                  onClick={() => setSelected(program)}
+                >
+                  Learn More <ArrowRight />
+                </Button>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+      <Dialog
+        open={selected !== null}
+        onOpenChange={(open) => {
+          if (!open) setSelected(null);
+        }}
+      >
+        <DialogContent className="dialog-scroll">
+          {selected && (
+            <>
+              <img
+                src={selected.image}
+                alt={selected.name}
+                className="w-full h-52 object-cover rounded-md"
+              />
+              <DialogTitle>{selected.name}</DialogTitle>
+              <DialogDescription>{selected.detail}</DialogDescription>
+              <div className="flex gap-5 text-xs text-muted-foreground">
+                <span className="flex gap-2 items-center">
+                  <Clock size={14} />
+                  45–60 minutes
+                </span>
+                <span className="flex gap-2 items-center">
+                  <BarChart3 size={14} />
+                  All levels welcome
+                </span>
+              </div>
+              <Button asChild onClick={() => setSelected(null)}>
+                <Link to="/contact" search={{ subject: `${selected.name} enquiry` }}>
+                  Ask about this program <ArrowRight />
+                </Link>
+              </Button>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+    </section>
+  );
+}
